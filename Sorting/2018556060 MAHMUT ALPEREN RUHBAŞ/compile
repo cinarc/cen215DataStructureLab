@@ -1,5 +1,0 @@
-#!/bin/bash
-## Ubuntu C Compiler
-	rm -rf ./sorting
-		gcc -o sorting sorting.c
-			./sorting
