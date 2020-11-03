@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <stdlib.h>
 
 
 /*cigdem cinar 2017556504 */
@@ -177,13 +178,132 @@ void mergesortchar(char* array, int start, int end) {
 		mergesort(array, start, mid, end);
 	}
 }
-
-
 void printArray(int array[], int size) {
 	int i;
 	for (i = 0; i < size; i++)
 		printf("%d ", array[i]);
 }
+
+void swap(int* a, int* b) {
+	int flag = *a;
+	*a = *b;
+	*b = flag;
+}
+
+void swapChar(char* a, char* b) {
+	char flag = *a;
+	*a = *b;
+	*b = flag;
+}
+int partition(int array[], int left, int right) {
+	int pivot = array[right];
+	int i = (left - 1);
+
+	for (int j = left; j < right; j++) {
+		if (array[j] <= pivot) {
+			i++;
+			swap(&array[i], &array[j]);
+		}
+	}
+
+	swap(&array[i + 1], &array[right]);
+	return (i + 1);
+}
+
+void quickSort(int array[], int left, int right) {
+	if (left < right) {
+
+		int pivot = partition(array, left, right);
+
+		quickSort(array, left, pivot - 1);
+
+		quickSort(array, pivot + 1, right);
+	}
+}
+
+int partitionChar(char array[], int left, int right) {
+
+	int pivot = array[right];
+	int i = (left - 1);
+
+	for (int j = left; j < right; j++) {
+		if (array[j] <= pivot) {
+			i++;
+			swapChar(&array[i], &array[j]);
+		}
+	}
+
+	swapChar(&array[i + 1], &array[right]);
+	return (i + 1);
+}
+
+void quickSortChar(char array[], int left, int right) {
+	if (left < right) {
+
+		int pivot = partitionChar(array, left, right);
+
+		quickSortChar(array, left, pivot - 1);
+
+		quickSortChar(array, pivot + 1, right);
+	}
+}
+
+void heapify(int array[], int n, int i) {
+	int max = i;
+	int leftChild = 2 * i + 1;
+	int rightChild = 2 * i + 2;
+
+	if (leftChild < n && array[leftChild] > array[max])
+		max = leftChild;
+
+	if (rightChild < n && array[rightChild] > array[max])
+		max = rightChild;
+
+	if (max != i) {
+		swap(&array[i], &array[max]);
+		heapify(array, n, max);
+	}
+}
+
+void heapSort(int array[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify(array, n, i);
+
+	for (int i = n - 1; i >= 0; i--) {
+		swap(&array[0], &array[i]);
+
+		heapify(array, i, 0);
+	}
+}
+
+void heapifyChar(char array[], int n, int i) {
+	int max = i;
+	int leftChild = 2 * i + 1;
+	int rightChild = 2 * i + 2;
+
+	if (leftChild < n && array[leftChild] > array[max])
+		max = leftChild;
+
+	if (rightChild < n && array[rightChild] > array[max])
+		max = rightChild;
+
+	if (max != i) {
+		swapChar(&array[i], &array[max]);
+		heapifyChar(array, n, max);
+	}
+}
+
+void heapSortChar(char array[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapifyChar(array, n, i);
+
+	for (int i = n - 1; i >= 0; i--) {
+		swapChar(&array[0], &array[i]);
+
+		heapifyChar(array, i, 0);
+	}
+}
+
 
 int main()
  {
@@ -237,7 +357,7 @@ int main()
 
 	bubbleSort(arr2, num2);
 	t = clock() - t;
-	printf("\n\n ***************Bubble Short***************\n ");
+	printf("\n\n ***************Bubble Sort***************\n ");
 	printf("\nSchool Number :");
 	printArray(arr2, num2);
 	printf("\nRunning Time  : %f\n", ((double)t) / CLOCKS_PER_SEC);
@@ -255,7 +375,7 @@ int main()
 
 	mergeSort(arr3, 0, num3 - 1);
 	t = (double)clock() - t;
-	printf("\n\n ****************Merge Short***************\n ");
+	printf("\n\n ****************Merge Sort***************\n ");
 	printf("\nSchool Number :");
 	printArray(arr2, num2);
 	printf("\nRunning Time  : %f\n", ((double)t) / CLOCKS_PER_SEC);
@@ -264,5 +384,42 @@ int main()
 	printf("Name          : %s\n", name3);
 	printf("Running Time  : %f\n", ((double)t) / CLOCKS_PER_SEC);
 
+
+/////////////////////////////////////////*QuickSort*//////////////////////////////////////////
+
+int arr4[] = { 2,0,1,7,5,5,6,5,0,4 };
+	int num4 = sizeof(arr) / sizeof(arr4[0]);
+	char name4[] = "cigdem";
+	char charS4 = strlen(name4);
+
+	quickSort(arr4, 0, num4 - 1);
+	t = clock() - t;
+	printf("\n\n ****************Quick Sort***************\n ");
+	printf("\nSchool Number :");
+	printArray(arr4, num4);
+	printf("\nRunning Time  : %f\n", ((double)t) / CLOCKS_PER_SEC);
+	quickSortChar(name4, 0, charS4 - 1);
+	t = clock() - t;
+	printf("Name          : %s\n", name4);
+	printf("Running Time  : %f\n",  ((double)t) / CLOCKS_PER_SEC);
+
+
+/////////////////////////////////////////*HeapSort*//////////////////////////////////////////
+
+int arr5[] =  { 2,0,1,7,5,5,6,5,0,4 };
+	int num5 = sizeof(arr) / sizeof(arr5[0]);
+	char name5[] = "cigdem";
+	char charS5 = strlen(name5);
+
+	heapSort(arr5, num5);
+	t = clock() - t;
+	printf("\n\n ****************Heap Sort***************\n ");
+	printf("\nSchool Number :");
+	printArray(arr5, num5);
+	printf("\nRunning Time  : %f\n",  ((double)t) / CLOCKS_PER_SEC);
+	heapSortChar(name5, charS5);
+	t = clock() - t;
+	printf("Name          : %s\n", name5);
+	printf("Running Time  : %f\n",((double)t) / CLOCKS_PER_SEC);
 return 0;
 }
